@@ -22,10 +22,14 @@
   <div id="emailPreviewSection"></div>
   <!-- <script src="./index.js"></script> -->
   <script>
+    const production  = 'https://sfmvawp.herokuapp.com/';
+    const development = 'http://localhost:8080/';
+    const url = (process.env.NODE_ENV ? production : development);
+
     $('#searchEmailAddress').on('click',function(event){
       let email = $("#emailAddress").val()
       console.log($("#emailAddress").val());
-      axios.get('http://localhost:8080/search/' + email)
+      axios.get(url+'/search/' + email)
         .then(function(response){
           console.log(response)
           let emailTable = "<table border=1><tr><td><b>EmailName</b></td><td><b>View Email URL</b></td><td><b>Download</b></td></tr>";
@@ -43,7 +47,7 @@
               let body = {
                 'view_email_url' : view_email_url
               }
-              axios.post('http://localhost:8080/preview', body)
+              axios.post(url+'/preview', body)
                 .then(function(response){
                   console.log(response)
                   let previewHtml = response.data;
@@ -61,7 +65,7 @@
               let body = {
                 'download_email_url' : download_email_url
               }
-              axios.post('http://localhost:8080/download', body)
+              axios.post(url+'/download', body)
                 .then(function(response){
                   console.log('Download response ' , response)
                   if(response.status == 200) {
