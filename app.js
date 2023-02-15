@@ -216,10 +216,25 @@ var html = fs.readFileSync('./index.html', 'utf8');
 
 async function genPdf(html, uuid) {
   return new Promise( (resolve, reject) => { 
-    pdf.create(html).toFile('./pdfs/'+uuid+'.pdf', function(err, res){
-      console.log('PDF Creation completed. ' + res.filename);
-      resolve(res.filename);
-    });  
+    // pdf.create(html).toFile('./pdfs/'+uuid+'.pdf', function(err, res){
+    //   console.log('PDF Creation completed. ' + res.filename);
+    //   resolve(res.filename);
+    // });  
+
+    const options = { format: 'A4', base: './pdfs/' }
+    const fileName = uuid;
+    const output = `./${fileName}.pdf`
+    pdf.create(html, options).toFile(output, function(error, response) {
+      if (error) {
+          console.log('****PDF Creation ERRORED****', error);
+          reject(error);
+      }
+      else {
+          console.log('****PDF Creation Successful****', response);
+          resolve(response.filename);
+      }
+   });
+
   });
 }
 
