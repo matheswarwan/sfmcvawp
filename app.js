@@ -12,6 +12,10 @@ const {
   v4: uuidv4,
 } = require('uuid');
 
+const production  = 'https://vawp.herokuapp.com/';
+const development = 'http://localhost:8080/';
+const url = (process.env.NODE_ENV ? production : development);
+
 
 const configSFMC = {
   authURI : process.env.authURI || "https://mcd5j7pnjymj6szljbfqhdb6jx2y.auth.marketingcloudapis.com/",
@@ -262,7 +266,7 @@ app.get("/d", function(req, res){
 
   (async () => {
     // Send the request to Processor.
-    const response = await axios.post('http://localhost:5000/process', body, {
+    const response = await axios.post(url+'/process', body, {
       headers: body.getHeaders(),
       responseType: 'stream',
     });
@@ -318,10 +322,10 @@ app.post("/download", async function(req, res){
   let responseJson = {}
   responseJson['fileName'] = uuid + '.pdf';
   responseJson['filePath'] = filePath;
-  responseJson['fileLocation'] = "http://localhost:8080/pdfs/"+uuid+".pdf";
+  responseJson['fileLocation'] = url + "/pdfs/"+uuid+".pdf";
 
   res.send(responseJson);
 });
 
 app.listen(port);
-console.log('Server started at http://localhost:' + port);
+console.log('Server started at ' + url);
