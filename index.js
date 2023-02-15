@@ -15,9 +15,9 @@
 
 const production  = 'https://sfmvawp.herokuapp.com/';
 const development = 'http://localhost:8080/';
-let url
-if(%NODE_ENV% === 'production') {
-  url = production;
-} else {
-  url = development;
-}
+let url = production;
+// if(%NODE_ENV% === 'production') {
+//   url = production;
+// } else {
+//   url = development;
+// }
