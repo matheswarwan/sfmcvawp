@@ -12,7 +12,7 @@ const {
   v4: uuidv4,
 } = require('uuid');
 
-const production  = 'https://vawp.herokuapp.com/';
+const production  = 'https://sfmvawp.herokuapp.com/';
 const development = 'http://localhost:8080/';
 const url = (process.env.NODE_ENV ? production : development);
 
