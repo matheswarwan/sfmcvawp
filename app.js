@@ -14,20 +14,23 @@ const {
 
 
 const configSFMC = {
-  authURI : "https://mcd5j7pnjymj6szljbfqhdb6jx2y.auth.marketingcloudapis.com/",
-  restURI : "https://mcd5j7pnjymj6szljbfqhdb6jx2y.rest.marketingcloudapis.com/",
-  clientId : "lnacybd1kedh6c6zetquhwbh",
-  clientSecret : "YTHRYyp0it504hdibpJG92ls", 
-  accountId: "1486252",
-  packageName : "test",
-  sendLogDE : {
-    name: "Dev_SendLogCopy",
-    key : "2B573522-D593-4EC7-9052-1A42990A5B53",
-    subscriberKey : "AccountID",
-    emailAddres : "Email"
+  authURI : process.env.authURI || "https://mcd5j7pnjymj6szljbfqhdb6jx2y.auth.marketingcloudapis.com/",
+  restURI : process.env.restURI || "https://mcd5j7pnjymj6szljbfqhdb6jx2y.rest.marketingcloudapis.com/",
+  clientId : process.env.clientId || "lnacybd1kedh6c6zetquhwbh",
+  clientSecret : process.env.clientSecret || "YTHRYyp0it504hdibpJG92ls", 
+  accountId: process.env.accountId || "1486252",
+  packageName : process.env.packageName || "test",
+  sendLogDE :  {
+    name: process.env.name || "Dev_SendLogCopy",
+    key : process.env.key || "2B573522-D593-4EC7-9052-1A42990A5B53",
+    subscriberKey : process.env.subscriberKey || "AccountID",
+    emailAddres : process.env.emailAddres || "Email"
   },
-  sfmcDomain : "sfmc.nait.ca"
+  sfmcDomain : process.env.sfmcDomain || "sfmc.nait.ca"
 }
+
+console.log('******************CONFIG VARIABLE*********************');
+console.log(configSFMC);
 
 let auth  = {
   accessToken : "",
