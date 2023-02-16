@@ -21,6 +21,7 @@
   <div id="downloadLink"></div>
   <hr>
   <div id="emailPreviewSection"></div>
+  <div id="pdfStream"></div>
   <!-- <script src="./index.js"></script> -->
   <script>
     // const production  = 'https://sfmvawp.herokuapp.com/';
@@ -76,7 +77,54 @@
                 })
                 .catch(function(error){
                   console.log(response)
-                });
+                }); 
+
+              /*axios.post(url+'/downloadStream', body)
+                .then(function(response){
+                  console.log('Download response ' , response)
+                  //$('#pdfStream').html(`<embed width="100%" height="100%" src="data:application/pdf;base64,${response.data}"/>`)
+                  //$('#pdfStream').html(`<a href=${response.data}>download here</a>`);
+
+                  var htmlText = '<embed width=100% height=100%'
+                  + ' type="application/pdf"'
+                  + ' src="data:application/pdf;base64,'
+                  + escape(encodeURI(response.data))
+                  + '"></embed>'; 
+
+                  $('#pdfStream').html(htmlText);
+
+                  var blob = new Blob([response.data], { type: 'application/pdf' });
+                  console.log(blob)
+                  blob = response.data;
+                  //$('#pdfStream').html(`<a href=${blob}>download here</a>`);
+                  
+                  
+                  //https://stackoverflow.com/questions/12876000/how-to-build-pdf-file-from-binary-string-returned-from-a-web-service-using-javas
+                  var downloadLink      = document.createElement('a');
+                  downloadLink.target   = '_blank';
+                  downloadLink.download = 'name_to_give_saved_file.pdf';
+                  var URL = window.URL || window.webkitURL;
+                  var downloadUrl = URL.createObjectURL(blob);
+                
+                  // set object URL as the anchor's href
+                  downloadLink.href = downloadUrl;
+                
+                  // append the anchor to document body
+                  document.body.append(downloadLink);
+                
+                  // fire a click event on the anchor
+                  downloadLink.click();
+                
+                  // cleanup: remove element and revoke object URL
+                  document.body.removeChild(downloadLink);
+                  URL.revokeObjectURL(downloadUrl);
+                
+                  
+
+                })
+                .catch(function(error){
+                  console.log(error)
+                }); */
 
               console.log('clicked ' , $(this).attr('customHref'));
             });
