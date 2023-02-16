@@ -25,12 +25,12 @@ const configSFMC = {
   accountId: process.env.accountId || "1486252",
   packageName : process.env.packageName || "test",
   sendLogDE :  {
-    name: process.env.name || "Dev_SendLogCopy",
-    key : process.env.key || "2B573522-D593-4EC7-9052-1A42990A5B53",
+    name: process.env.name || "SendLog",
+    key : process.env.key || "EAE6B1F7-D33E-43FE-910C-FD3EB94DA315",
     subscriberKey : process.env.subscriberKey || "AccountID",
-    emailAddres : process.env.emailAddres || "Email"
+    emailAddres : process.env.emailAddres || "emailaddr"
   },
-  sfmcDomain : process.env.sfmcDomain || "sfmc.nait.ca"
+  sfmcDomain : process.env.sfmcDomain || "email.alc.ca"
 }
 
 console.log('******************CONFIG VARIABLE*********************');
@@ -214,6 +214,15 @@ app.get("/search", function(req, res){
 //https://www.npmjs.com/package/html-pdf?activeTab=readme
 var html = fs.readFileSync('./index.html', 'utf8');
 
+async function genPdfLocal(html, uuid) {
+  return new Promise( (resolve, reject) => { 
+    pdf.create(html).toFile('./pdfs/'+uuid+'.pdf', function(err, res){
+      console.log('PDF Creation completed. ' + res.filename);
+      resolve(res.filename);
+    });  
+  });
+}
+
 async function genPdf(html, uuid) {
   return new Promise( (resolve, reject) => { 
     // pdf.create(html).toFile('./pdfs/'+uuid+'.pdf', function(err, res){
@@ -223,17 +232,21 @@ async function genPdf(html, uuid) {
 
     const options = { format: 'A4', base: './pdfs/' }
     const fileName = uuid;
-    const output = `./${fileName}.pdf`
-    pdf.create(html, options).toFile(output, function(error, response) {
-      if (error) {
-          console.log('****PDF Creation ERRORED****', error);
-          reject(error);
-      }
-      else {
-          console.log('****PDF Creation Successful****', response);
-          resolve(response.filename);
-      }
-   });
+    const output = `./pdfs/${fileName}.pdf`
+    pdf.create(html, options).toStream(function(err, stream){
+      console.log('******* STREAMED PDF********* ', err, stream);
+      resolve(stream);
+    });
+  //   pdf.create(html, options).toFile(output, function(error, response) {
+  //     if (error) {
+  //         console.log('****PDF Creation ERRORED****', error);
+  //         reject(error);
+  //     }
+  //     else {
+  //         console.log('****PDF Creation Successful****', response);
+  //         resolve(response.filename);
+  //     }
+  //  });
 
   });
 }
@@ -243,12 +256,9 @@ app.get("/download", async function(req, res){
   // pdf.create( html ).toStream(function(err, stream){
   //   stream.pipe(fs.createWriteStream('./foo.pdf'));
   // });
-  await genPdf(vawpHtml);
+  await genPdfLocal(vawpHtml);
   res.sendFile(path.join(__dirname, './bc.pdf'))
   
-  
-  
-
 });
 
 app.get("/download-old", function(req, res){ 
@@ -332,7 +342,7 @@ app.post("/download", async function(req, res){
   let reqBody = req.body;
   let download_email_url = req.body.download_email_url;
   let emailHtml = await getEmailHTML(download_email_url);
-  let filePath = await genPdf(emailHtml, uuid);
+  let filePath = await genPdfLocal(emailHtml, uuid);
   //res.sendFile(path.join(__dirname, './'+uuid+'.pdf'))
   let responseJson = {}
   responseJson['fileName'] = uuid + '.pdf';
@@ -340,6 +350,31 @@ app.post("/download", async function(req, res){
   responseJson['fileLocation'] = url + "/pdfs/"+uuid+".pdf";
 
   res.send(responseJson);
+});
+
+
+app.post("/downloadStream", async function(req, res){
+  console.log(req.body);
+  let uuid = uuidv4();
+  let reqBody = req.body;
+  let download_email_url = req.body.download_email_url;
+  let emailHtml = await getEmailHTML(download_email_url);
+
+  /* pdf.create(emailHtml, { format: 'A4', base: './pdfs/' }).toBuffer(function(err, buffer) {
+    if (err) return res.send(err);
+    res.type('pdf');
+    res.end(buffer, 'binary');
+  }); */
+
+  let stream = await genPdf(emailHtml, uuid);
+  //res.sendFile(path.join(__dirname, './'+uuid+'.pdf'))
+  console.log('Stream in downloda endpoint ' , stream)
+  // res.setHeader('Content-Length', stream.size);
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', 'attachment; filename='+uuid+'.pdf');
+  // res.setHeader('Content-Disposition', 'inline; filename='+uuid+'.pdf');
+  stream.pipe(res);
+  //res.send(responseJson); 
 });
 
 app.listen(port);
