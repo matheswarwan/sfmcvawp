@@ -11,6 +11,7 @@ const {
   v1: uuidv1,
   v4: uuidv4,
 } = require('uuid');
+const { response } = require('express');
 
 const production  = 'https://sfmvawp.herokuapp.com';
 const development = 'http://localhost:8080';
@@ -317,12 +318,13 @@ app.get("/search/:email", async function(req, res){
     responseJson['emails'] = [];
     for(item in deRows.items) {
       let tmp = {};
-      tmp['EmailName'] = deRows.items[item]['values']['emailname']; //TODO: Parameterize this
+      tmp['EmailName'] = (deRows.items[item]['values']['emailname'] ? deRows.items[item]['values']['emailname'] : 'Email Name Not Found') ; //TODO: Parameterize this
       tmp['View_Email_URL'] = deRows.items[item]['values']['view_email_url'];
+      tmp['DateSent'] = (deRows.items[item]['values']['sentDate'] ? deRows.items[item]['values']['sentDate'] : 'No Date Found') ; //TODO: Parameterize this
       responseJson['emails'].push(tmp);
     }
   }
-
+  console.log('Search result ' , responseJson)
   res.send(responseJson);
 });
 

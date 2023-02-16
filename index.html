@@ -19,9 +19,9 @@
     <input type="text" id="emailAddress" name="emailAddress"/>
     <button id="searchEmailAddress" value="Search" type="button">Search</button>
   </form>
-  <div id="loadingSpinner" hidden>Loading...</div>
   <div id="emailPreviewTable"></div>
   <hr>
+  <div id="loadingSpinner" hidden>Loading...</div>
   <div id="downloadLink"></div>
   <hr>
   <div id="emailPreviewSection"></div>
@@ -41,11 +41,11 @@
       axios.get(url+'/search/' + email)
         .then(function(response){
           console.log(response)
-          let emailTable = "<table border=1><tr><td><b>EmailName</b></td><td><b>View Email URL</b></td><td><b>Download</b></td></tr>";
+          let emailTable = "<table border=1><tr><td><b>Email Name</b></td><td><b>Date Sent</b></td><td><b>View Email URL</b></td><td><b>Download</b></td></tr>";
           if(response.status == 200){
             //Show table
             for(i in response.data.emails){
-              emailTable += '<tr><td>' + response.data.emails[i]['EmailName'] + '</td><td><a class="ck-viewEmailAction" customHref="' + response.data.emails[i]['View_Email_URL'] + '" target="_blank" style="color:#0000EE;  text-decoration: underline;"> View Email </a></td><td><a class="ck-downloadEmailAction" customHref="' + response.data.emails[i]['View_Email_URL'] + '" target="_blank"  style="color:#0000EE;  text-decoration: underline;"> Download PDF </a></td></tr>';
+              emailTable += '<tr><td>' + response.data.emails[i]['EmailName'] + '</td><td>' + response.data.emails[i]['DateSent'] + '</td><td><a class="ck-viewEmailAction" customHref="' + response.data.emails[i]['View_Email_URL'] + '" target="_blank" style="color:#0000EE;  text-decoration: underline;"> View Email </a></td><td><a class="ck-downloadEmailAction" customHref="' + response.data.emails[i]['View_Email_URL'] + '" target="_blank"  style="color:#0000EE;  text-decoration: underline;"> Download PDF </a></td></tr>';
             }
             emailTable += "</table>"
             $("#emailPreviewTable").html(emailTable);
