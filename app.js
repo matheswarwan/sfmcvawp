@@ -320,7 +320,7 @@ app.get("/search/:email", async function(req, res){
       let tmp = {};
       tmp['EmailName'] = (deRows.items[item]['values']['emailname'] ? deRows.items[item]['values']['emailname'] : 'Email Name Not Found') ; //TODO: Parameterize this
       tmp['View_Email_URL'] = deRows.items[item]['values']['view_email_url'];
-      tmp['DateSent'] = (deRows.items[item]['values']['sentDate'] ? deRows.items[item]['values']['sentDate'] : 'No Date Found') ; //TODO: Parameterize this
+      tmp['DateSent'] = (deRows.items[item]['values']['sentdate'] ? deRows.items[item]['values']['sentdate'] : 'No Date Found') ; //TODO: Parameterize this
       responseJson['emails'].push(tmp);
     }
   }
