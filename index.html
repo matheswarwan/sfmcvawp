@@ -34,6 +34,9 @@
 
     $('#searchEmailAddress').on('click',function(event){
       //show loading spinner
+      console.log('CF_PAGES_URL: ', CF_PAGES_URL );
+      console.log('Env: ', Env );
+
       $('#loadingSpinner').show();
 
       let email = $("#emailAddress").val()
