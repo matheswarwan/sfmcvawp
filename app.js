@@ -13,7 +13,8 @@ const {
 } = require('uuid');
 const { response } = require('express');
 
-const production  = 'https://sfmvawp.herokuapp.com';
+const production  = CF_PAGES_URL || 'https://sfmcvawp.pages.dev';
+console.log('CF_PAGES_URL: ', CF_PAGES_URL );
 const development = 'http://localhost:8080';
 const url = (process.env.NODE_ENV ? production : development);
 
