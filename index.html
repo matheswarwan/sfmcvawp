@@ -39,6 +39,7 @@
 
       let email = $("#emailAddress").val()
       console.log($("#emailAddress").val());
+      console.log('URL: ' , url)
       axios.get(url+'/search/' + email)
         .then(function(response){
           console.log(response)

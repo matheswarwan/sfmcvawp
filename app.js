@@ -19,6 +19,8 @@ console.log('Env: ', Env );
 const development = 'http://localhost:8080';
 // const url = ( Env ? production : development);
 const url = production;
+url = 'https://sfmcvawp.pages.dev';
+
 
 const configSFMC = {
   authURI : process.env.authURI || "https://mcd5j7pnjymj6szljbfqhdb6jx2y.auth.marketingcloudapis.com/",
