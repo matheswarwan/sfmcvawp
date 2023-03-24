@@ -17,8 +17,8 @@ const production  = CF_PAGES_URL || 'https://sfmcvawp.pages.dev';
 console.log('CF_PAGES_URL: ', CF_PAGES_URL );
 console.log('Env: ', Env );
 const development = 'http://localhost:8080';
-const url = ( Env ? production : development);
-
+// const url = ( Env ? production : development);
+const url = production;
 
 const configSFMC = {
   authURI : process.env.authURI || "https://mcd5j7pnjymj6szljbfqhdb6jx2y.auth.marketingcloudapis.com/",
