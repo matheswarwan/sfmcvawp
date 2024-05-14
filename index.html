@@ -16,7 +16,7 @@
 <body>
   <form>
     <label for="emailAddress"></label>
-    <input type="text" id="emailAddress" name="emailAddress"/>
+    <input type="text" id="emailAddress" name="emailAddress" value="julieboudreau@rogers.com"/>
     <button id="searchEmailAddress" value="Search" type="button">Search</button>
   </form>
   <div id="emailPreviewTable"></div>
@@ -28,10 +28,9 @@
   <div id="pdfStream"></div>
   <!-- <script src="./index.js"></script> -->
   <script>
-    // const production  = 'https://sfmvawp.herokuapp.com/';
-    // const development = 'http://localhost:8080/';
-    // const url = (process.env.NODE_ENV ? production : development);
+    // let url = 'http://localhost:8080/';
     url = 'https://sfmcvawp.pages.dev';
+    console.log("URL in index page " , url )
 
     $('#searchEmailAddress').on('click',function(event){
       //show loading spinner
@@ -40,7 +39,7 @@
 
       let email = $("#emailAddress").val()
       console.log($("#emailAddress").val());
-      console.log('URL: ' , url)
+      // console.log('URL: ' , url)
       axios.get(url+'/search/' + email)
         .then(function(response){
           console.log(response)
