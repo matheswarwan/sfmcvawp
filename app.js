@@ -13,13 +13,17 @@ const {
 } = require('uuid');
 const { response } = require('express');
 
+const CF_PAGES_URL = null;
+const Env = 'test';
+
 const production  = CF_PAGES_URL || 'https://sfmcvawp.pages.dev';
 console.log('CF_PAGES_URL: ', CF_PAGES_URL );
 console.log('Env: ', Env );
 const development = 'http://localhost:8080';
 // const url = ( Env ? production : development);
-const url = production;
-url = 'https://sfmcvawp.pages.dev';
+let url = production;
+console.log('*** URL *** ' , url)
+// url = 'https://sfmcvawp.pages.dev';
 
 
 const configSFMC = {
@@ -110,11 +114,11 @@ async function getAccessToken() {
 //https://salesforce.stackexchange.com/questions/152409/marketing-cloud-rest-api-get-method-to-data-extensions
 async function queryDE(emailAddres) { 
   let tmpAuth = {};
-  //GET https://{{et_subdomain}}.rest.marketingcloudapis.com/data/v1/customobjectdata/key/{{DataExtensionKey}}/rowset?$pageSize=20&$page=1&$filter={{columnName}}%20eq%20'{{value}}'
+  //GET https://{{et_subdomain}}.rest.marketingcloudapis.com/data/v1/customobjectdata/key/{{DataExtensionKey}}/rowset?$orderBy=DateSent%20DESC&$pageSize=100&$page=1&$filter={{columnName}}%20eq%20'{{value}}'
   let restURL = configSFMC.restURI 
     + "data/v1/customobjectdata/key/"
     + configSFMC.sendLogDE.key
-    + "/rowset?$pageSize=20&$page=1&$filter="
+    + "/rowset?$orderBy=sentDate%20DESC&$pageSize=20&$page=1&$filter="
     + configSFMC.sendLogDE.emailAddres
     +"%20eq%20'"
     +emailAddres
@@ -384,4 +388,5 @@ app.post("/downloadStream", async function(req, res){
 });
 
 app.listen(port);
+console.log('Server started at port ' + port);
 console.log('Server started at ' + url);
